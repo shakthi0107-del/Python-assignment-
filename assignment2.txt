@@ -16,7 +16,7 @@
 
 # Your code here:
 student = {
-    "S1001": {
+    "S0107": {
         "name": "sakthi",
         "age": 28,
         "courses": {
@@ -27,7 +27,7 @@ student = {
     }
 }
 
-student_id = "0107"
+student_id = "S0107"
 S = student [student_id]
 
 print(f"Name: {S['name']}")
@@ -165,4 +165,5 @@ for book_id, details in library.items():
 print("\nUsers who borrowed books:")
 for entry in borrowing_history:
     user_name = entry[1]
+
     print("-", user_name)
