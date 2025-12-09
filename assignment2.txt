@@ -1,0 +1,168 @@
+# Exercise 1: 
+# Create a dictionary for one student with name, age, and a nested dictionary of three subjects and marks
+# Example:
+    {
+        "student_id": {
+            "name": "...",
+            "age": ...,
+            "courses": {
+                "Math": 85,
+                "Science": 90,
+                "English": 88
+            }
+        }
+    }
+# Print the student’s name and age, then calculate and print the average mark
+
+# Your code here:
+student = {
+    "S1001": {
+        "name": "sakthi",
+        "age": 28,
+        "courses": {
+            "Math": 85,
+            "Science": 90,
+            "English": 88
+        }
+    }
+}
+
+student_id = "0107"
+S = student [student_id]
+
+print(f"Name: {S['name']}")
+print(f"Age: {S['age']}")
+
+
+marks = S['courses'].values()
+average = sum(marks) / len(marks)
+
+
+print(f"Average Mark: {average:.2f}")
+
+
+
+####################################################################
+# Exercise 2: 
+# Create a dictionary for one department with keys "budget" and "employees"
+# "employees" should be a list of two dictionaries, each with "name" and "salary"
+# Example:
+    {
+       "Engineering": {
+           "budget": 500000,
+           "employees": [
+               {"name": "Alice", "salary": 90000},
+               {"name": "Bob", "salary": 85000}
+           ]
+       },
+       "Marketing": { ... }
+   }
+# Calculate and print the total salary, then print if it is within the budget
+
+# Your code here:
+department = {
+    "Engineering": {
+        "budget": 500000,
+        "employees": [
+            {"name": "sakthi", "salary": 90000},
+            {"name": "Abi",   "salary": 85000}
+        ]
+    }
+}
+
+
+E = department["Engineering"]
+
+total_salary = E["employees"][0]["salary"] + E["employees"][1]["salary"]
+
+print("Total Salary:", total_salary)
+
+if total_salary <= E ["budget"]:
+    print("The total salary is within the budget.")
+else:
+    print("The total salary exceeds the budget.")
+
+
+
+####################################################################
+# Exercise 3: 
+# Create a list of 3 coordinate tuples (x, y)
+# Print the first and last coordinates
+# Create and print a new list with x and y swapped in each tuple
+
+# Your code here:
+coordinates = [(10, 20), (5, 15), (7, 3)]
+
+print("First coordinate:", coordinates[0])
+print("Last coordinate:", coordinates[-1])
+
+swapped_coordinates = []
+
+for x, y in coordinates:
+    swapped_coordinates.append((y, x))
+
+
+print("Swapped coordinates:", swapped_coordinates)
+
+
+
+####################################################################
+# Exercise 4:
+# Create two sets: tech_subscribers and news_subscribers with some overlapping emails
+# Print the emails that are in both sets
+# Print all unique emails from both sets
+# Remove one email from both sets and print the updated sets
+
+# Your code here:
+L2 = {"a@gmail.com", "b@gmail.com", "c@gmail.com"}
+L3 = {"b@gmail.com", "c@gmail.com", "d@gmail.com"}
+
+
+common_emails = L2.intersection(L3)
+print("Common emails:", common_emails)
+
+
+all_unique_emails = L2.union(L3)
+print("All unique emails:", all_unique_emails)
+
+
+L2.remove("a@gmail.com")
+L3.remove("d@gmail.com")
+
+
+print("Updated L2:", L2)
+print("Updated L3:", L3)
+
+
+####################################################################
+# Exercise 5: 
+# Create a dictionary "library" with 3 books; each value is a dictionary with "title", "author", "available"
+# Create a list "borrowing_history" with 2 tuples (book_id, user_name)
+# Print all titles of books that are available
+# Print all user names that appear in borrowing_history
+
+# Your code here:
+
+library = {
+    "book1": {"title": "The Alchemist", "author": "Paulo Coelho", "available": True},
+    "book2": {"title": "1984", "author": "George Orwell", "available": False},
+    "book3": {"title": "Atomic Habits", "author": "James Clear", "available": True}
+}
+
+
+borrowing_history = [
+    ("book1", "Sakthi"),
+    ("book2", "Abi")
+]
+
+
+print("Available books:")
+for book_id, details in library.items():
+    if details["available"]:
+        print("-", details["title"])
+
+
+print("\nUsers who borrowed books:")
+for entry in borrowing_history:
+    user_name = entry[1]
+    print("-", user_name)
