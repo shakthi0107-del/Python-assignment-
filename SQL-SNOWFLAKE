@@ -1,0 +1,202 @@
+https://app.snowflake.com/xntksad/ggb90371/w1moteyaqmF2#query
+
+-- Table 1: CUSTOMERS
+create or replace table CUSTOMERS (
+    CUSTOMER_ID INT,
+    CUSTOMER_NAME VARCHAR(100),
+    EMAIL VARCHAR(100),
+    CITY VARCHAR(100),
+    STATE VARCHAR(50),
+    REGISTRATION_DATE DATE
+);
+
+-- Table 2: PRODUCTS
+CREATE OR REPLACE TABLE PRODUCTS (
+    PRODUCT_ID INT PRIMARY KEY,
+    PRODUCT_NAME VARCHAR(100),
+    CATEGORY VARCHAR(50),
+    PRICE DECIMAL(10,2),
+    STOCK_QUANTITY INT
+);
+
+-- Table 3: ORDERS
+CREATE OR REPLACE TABLE ORDERS (
+    ORDER_ID INT PRIMARY KEY,
+    CUSTOMER_ID INT,
+    ORDER_DATE DATE,
+    TOTAL_AMOUNT DECIMAL(10,2),
+    STATUS VARCHAR(20)
+);
+
+-- Table 4: ORDER_ITEMS
+CREATE OR REPLACE TABLE ORDER_ITEMS (
+    ORDER_ITEM_ID INT PRIMARY KEY,
+    ORDER_ID INT,
+    PRODUCT_ID INT,
+    QUANTITY INT,
+    UNIT_PRICE DECIMAL(10,2)
+);
+
+---Insert Customers
+INSERT INTO CUSTOMERS VALUES
+(1, 'Amit Kumar', 'amit.kumar@email.com', 'Mumbai', 'Maharashtra', '2023-01-15'),
+(2, 'Priya Sharma', 'priya.sharma@email.com', 'Delhi', 'Delhi', '2023-02-20')
+,(3, 'Rahul Verma', 'rahul.verma@email.com', 'Bangalore', 'Karnataka', '2023-03-10')
+,(4, 'Sneha Patel', 'sneha.patel@email.com', 'Mumbai', 'Maharashtra', '2023-04-05'),
+(5, 'Rajesh Singh', 'rajesh.singh@email.com', 'Kolkata', 'West Bengal', '2023-05-12'),
+(6, 'Neha Gupta', 'neha.gupta@email.com', 'Chennai', 'Tamil Nadu', '2023-06-18'),
+(7, 'Vikram Roy', 'vikram.roy@email.com', 'Pune', 'Maharashtra', '2023-07-22'),
+(8, 'Anjali Das', 'anjali.das@email.com', 'Hyderabad', 'Telangana', '2023-08-30');
+
+-- Insert Products
+INSERT INTO PRODUCTS VALUES
+(101, 'Laptop Pro 15', 'Electronics', 75000.00, 50),
+(102, 'Wireless Mouse', 'Electronics', 800.00, 200),
+(103, 'USB-C Cable', 'Accessories', 350.00, 500),
+(104, 'Mechanical Keyboard', 'Electronics', 4500.00, 80),
+(105, 'Monitor 24"', 'Electronics', 15000.00, 40),
+(106, 'Laptop Bag', 'Accessories', 1500.00, 150),
+(107, 'Webcam HD', 'Electronics', 3500.00, 60),
+(108, 'Headphones', 'Electronics', 2500.00, 100),
+(109, 'Phone Stand', 'Accessories', 450.00, 300),
+(110, 'External SSD 1TB', 'Electronics', 8500.00, 70);
+
+--Insert into Orders table
+INSERT INTO ORDERS VALUES
+(1001, 1, '2024-01-10', 75800.00, 'Delivered'),
+(1002, 2, '2024-01-12', 19500.00, 'Delivered'),
+(1003, 3, '2024-01-15', 8150.00, 'Delivered'),
+(1004, 1, '2024-01-18', 16300.00, 'Delivered'),
+(1005, 4, '2024-01-20', 5300.00, 'Shipped'),
+(1006, 5, '2024-01-22', 78000.00, 'Processing'),
+(1007, 2, '2024-01-25', 2850.00, 'Delivered'),
+(1008, 6, '2024-01-28', 12000.00, 'Delivered');
+
+-- Insert Order Items
+INSERT INTO ORDER_ITEMS VALUES
+(1, 1001, 101, 1, 75000.00),  
+(2, 1001, 102, 1, 800.00),     
+(3, 1002, 105, 1, 15000.00),   
+(4, 1002, 104, 1, 4500.00), -- Priya: Keyboard
+(5, 1003, 107, 1, 3500.00), -- Rahul: Webcam
+(6, 1003, 104, 1, 4500.00), -- Rahul: Keyboard
+(7, 1003, 103, 5, 350.00), -- Rahul: 5 Cables
+(8, 1004, 105, 1, 15000.00), -- Amit: Monitor
+(9, 1004, 106, 1, 1500.00), -- Amit: Bag
+(10, 1005, 108, 2, 2500.00), -- Sneha: 2 Headphones
+(11, 1005, 109, 1, 450.00), -- Sneha: Phone Stand
+(12, 1006, 101, 1, 75000.00), -- Rajesh: Laptop
+(13, 1006, 110, 1, 8500.00), -- Rajesh: SSD
+(14, 1007, 108, 1, 2500.00), -- Priya: Headphones
+(15, 1007, 103, 1, 350.00), -- Priya: Cable
+(16, 1008, 105, 1, 15000.00); -- Neha: Monitor
+
+SELECT
+    TO_CHAR(ORDER_DATE, 'YYYY-MM') AS ORDER_MONTH,
+    COUNT(ORDER_ID) AS TOTAL_ORDERS,
+    SUM(TOTAL_AMOUNT) AS TOTAL_REVENUE,
+    ROUND(AVG(TOTAL_AMOUNT), 2) AS AVERAGE_ORDER_VALUE
+FROM ORDERS
+GROUP BY TO_CHAR(ORDER_DATE, 'YYYY-MM')
+ORDER BY ORDER_MONTH ASC;
+
+
+SELECT
+    YEAR(ORDER_DATE)  AS ORDER_YEAR,
+    MONTH(ORDER_DATE) AS ORDER_MONTH,
+    COUNT(*)          AS TOTAL_ORDERS,
+    SUM(TOTAL_AMOUNT) AS TOTAL_REVENUE,
+    ROUND(AVG(TOTAL_AMOUNT), 2) AS AVG_ORDER_VALUE
+FROM ORDERS
+GROUP BY
+    YEAR(ORDER_DATE),
+    MONTH(ORDER_DATE)
+ORDER BY
+    ORDER_YEAR,
+    ORDER_MONTH;
+
+
+
+SELECT
+    c.CITY,
+    c.STATE,
+    COUNT(DISTINCT c.CUSTOMER_ID) AS TOTAL_CUSTOMERS,
+    COUNT(o.ORDER_ID)             AS TOTAL_ORDERS,
+    COALESCE(SUM(o.TOTAL_AMOUNT), 0) AS TOTAL_REVENUE
+FROM CUSTOMERS c
+LEFT JOIN ORDERS o
+    ON c.CUSTOMER_ID = o.CUSTOMER_ID
+GROUP BY
+    c.CITY,
+    c.STATE
+ORDER BY
+    TOTAL_REVENUE DESC;
+
+
+SELECT
+    p.CATEGORY,
+    COUNT(DISTINCT p.PRODUCT_ID) AS DISTINCT_PRODUCTS,
+    COALESCE(SUM(oi.QUANTITY), 0) AS TOTAL_UNITS_SOLD,
+    COALESCE(SUM(oi.QUANTITY * oi.UNIT_PRICE), 0) AS TOTAL_REVENUE
+FROM PRODUCTS p
+LEFT JOIN ORDER_ITEMS oi
+    ON p.PRODUCT_ID = oi.PRODUCT_ID
+GROUP BY
+    p.CATEGORY
+ORDER BY
+    TOTAL_REVENUE DESC;
+
+SELECT
+    c.CUSTOMER_ID,
+    c.CUSTOMER_NAME,
+    c.EMAIL,
+    c.CITY,
+    o.ORDER_ID,
+    o.ORDER_DATE,
+    o.STATUS,
+    p.PRODUCT_NAME,
+    oi.QUANTITY,
+    oi.UNIT_PRICE,
+    (oi.QUANTITY * oi.UNIT_PRICE) AS LINE_TOTAL
+FROM CUSTOMERS c
+JOIN ORDERS o
+    ON c.CUSTOMER_ID = o.CUSTOMER_ID
+JOIN ORDER_ITEMS oi
+    ON o.ORDER_ID = oi.ORDER_ID
+JOIN PRODUCTS p
+    ON oi.PRODUCT_ID = p.PRODUCT_ID
+WHERE c.CUSTOMER_NAME = 'Amit Kumar'
+ORDER BY
+    o.ORDER_DATE DESC;
+
+
+SELECT
+    o.ORDER_ID,
+    o.ORDER_DATE,
+    o.STATUS,
+    o.TOTAL_AMOUNT,
+    c.CUSTOMER_NAME,
+    c.EMAIL,
+    c.CITY
+FROM ORDERS o
+JOIN CUSTOMERS c
+    ON o.CUSTOMER_ID = c.CUSTOMER_ID
+WHERE o.STATUS IN ('Processing', 'Shipped')
+ORDER BY
+    o.ORDER_DATE;
+
+
+SELECT
+    PRODUCT_NAME,
+    CATEGORY,
+    PRICE,
+    STOCK_QUANTITY,
+    (PRICE * STOCK_QUANTITY) AS INVENTORY_VALUE
+FROM PRODUCTS
+WHERE STOCK_QUANTITY > 0
+ORDER BY
+    INVENTORY_VALUE DESC;
+
+
+
+
