@@ -1,0 +1,5 @@
+﻿CUSTOMER_ID,CUSTOMER_NAME,EMAIL,CITY,ORDER_ID,ORDER_DATE,STATUS,PRODUCT_NAME,QUANTITY,UNIT_PRICE,LINE_TOTAL
+1,Amit Kumar,amit.kumar@email.com,Mumbai,1004,2024-01-18,Delivered,"Monitor 24""",1,15000.00,15000.00
+1,Amit Kumar,amit.kumar@email.com,Mumbai,1004,2024-01-18,Delivered,Laptop Bag,1,1500.00,1500.00
+1,Amit Kumar,amit.kumar@email.com,Mumbai,1001,2024-01-10,Delivered,Laptop Pro 15,1,75000.00,75000.00
+1,Amit Kumar,amit.kumar@email.com,Mumbai,1001,2024-01-10,Delivered,Wireless Mouse,1,800.00,800.00
